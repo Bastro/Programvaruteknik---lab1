@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,14 @@ public class DataCollectionBuilder {
 		for (Entry<LocalDate, Double> xValue : xData.getData().entrySet()) {
 		    for (Entry<LocalDate, Double> yValue : yData.getData().entrySet()) {
 		    	if (getLocalDate(xValue.getKey()).equals(getLocalDate(yValue.getKey()))) {
-		    		List<MatchedDataPair> matchedPair = resultData.get(getLocalDate(xValue.getKey()));
-		    		matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
+		    		if (resultData.get(getLocalDate(xValue.getKey())) != null) {
+		    			List<MatchedDataPair> matchedPair = resultData.get(getLocalDate(xValue.getKey()));
+		    			matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
+		    		} else {
+		    			List<MatchedDataPair> matchedPair = new ArrayList<MatchedDataPair>();
+		    			matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
+		    			resultData.put(getLocalDate(xValue.getKey()), matchedPair);
+		    		}
 		    	}
 		    }
 		}
