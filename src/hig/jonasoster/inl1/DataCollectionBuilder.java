@@ -1,3 +1,4 @@
+package hig.jonasoster.inl1;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class DataCollectionBuilder {
 	}
 
 	public String getTitle() {
-		return "Unit: "  + xData.getUnit() + ", Unit: " + yData.getUnit();
+		return "Name: "  + xData.getName() + ", Name: " + yData.getName();
 	}
 	
 	public DataCollection getResult() {

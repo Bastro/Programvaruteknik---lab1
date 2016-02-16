@@ -1,3 +1,4 @@
+package hig.jonasoster.inl1;
 import java.util.Map;
 
 public class DataCollection {
@@ -31,6 +32,6 @@ public class DataCollection {
 	
 	@Override
 	public String toString() {
-		return "";
+		return "Title: " + title + ", xUnit: " + xUnit + ", yUnit" + xUnit;
 	}
 }

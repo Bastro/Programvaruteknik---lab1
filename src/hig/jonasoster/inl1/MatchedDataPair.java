@@ -1,3 +1,4 @@
+package hig.jonasoster.inl1;
 
 public class MatchedDataPair {
 	private double xValue;
