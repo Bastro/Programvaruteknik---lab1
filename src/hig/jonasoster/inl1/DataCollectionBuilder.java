@@ -16,6 +16,7 @@ public class DataCollectionBuilder {
 		this.xData = xData;
 		this.yData = yData;
 		this.resolution = resolution;
+		finalResult = new HashMap<String, MatchedDataPair>();
 	}
 
 	public String getTitle() {
@@ -29,17 +30,17 @@ public class DataCollectionBuilder {
 			List<MatchedDataPair> list = values.getValue();
 			double sumX = 0.0;
 			double sumY = 0.0;
-			int counter = 0;
 			
-			for (MatchedDataPair pair: list) {
-				sumX = pair.getxValue();
-				sumY = pair.getyValue();
-				counter++;
+			for (MatchedDataPair pair : list) {
+				System.out.println(pair.toString());
+				System.out.println(pair.toString());
+				sumX += pair.getxValue();
+				sumY += pair.getyValue();
+				System.out.println(sumX);
+				System.out.println(sumY);
 			}
 			
-			double averageX = (sumX / counter);
-			double averageY = (sumY / counter);
-			finalResult.put(values.getKey(), new MatchedDataPair(averageX, averageY));
+			finalResult.put(values.getKey(), new MatchedDataPair(sumX, sumY));
 	    }
 	
 		DataCollection dc = new DataCollection(getTitle(), xData.toString(), yData.toString(), finalResult);

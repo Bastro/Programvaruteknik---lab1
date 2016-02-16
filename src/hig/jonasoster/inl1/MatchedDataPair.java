@@ -19,6 +19,6 @@ public class MatchedDataPair {
 	
 	@Override
 	public String toString() {
-		return "";
+		return "xValue: " + xValue + ", yValue: " + yValue;
 	}
 }
