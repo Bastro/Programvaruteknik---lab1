@@ -23,6 +23,14 @@ public class DataCollectionBuilder {
 		return "Name: "  + xData.getName() + ", Name: " + yData.getName();
 	}
 	
+	public void setResolution(Resolution resolution) {
+		this.resolution = resolution;
+	}
+	
+	public Resolution getResolution() {
+		return resolution;
+	}
+	
 	public DataCollection getResult() {
 		Map<String, List <MatchedDataPair>> resultData = checkMatchedDataPair();
 		
@@ -30,17 +38,19 @@ public class DataCollectionBuilder {
 			List<MatchedDataPair> list = values.getValue();
 			double sumX = 0.0;
 			double sumY = 0.0;
+			int counter = 0;
 			
 			for (MatchedDataPair pair : list) {
-				System.out.println(pair.toString());
-				System.out.println(pair.toString());
-				sumX += pair.getxValue();
-				sumY += pair.getyValue();
-				System.out.println(sumX);
-				System.out.println(sumY);
+				sumX = sumX + pair.getxValue();
+				sumY = sumY + pair.getyValue();
+				counter++;
 			}
 			
-			finalResult.put(values.getKey(), new MatchedDataPair(sumX, sumY));
+			/*System.out.println(sumY);
+			System.out.println(sumX);
+			System.out.println(counter);*/
+			
+			finalResult.put(values.getKey(), new MatchedDataPair((sumX / counter), (sumY / counter)));
 	    }
 	
 		DataCollection dc = new DataCollection(getTitle(), xData.toString(), yData.toString(), finalResult);
@@ -52,12 +62,18 @@ public class DataCollectionBuilder {
 		Map<String, List <MatchedDataPair>> resultData = new HashMap<String, List <MatchedDataPair>>();
 		
 		for (Entry<LocalDate, Double> xValue : xData.getData().entrySet()) {
-		    for (Entry<LocalDate, Double> yValue : yData.getData().entrySet()) {
+		    for (Entry<LocalDate, Double> yValue : yData.getData().entrySet()) {	
+		    	// Check if match
 		    	if (getLocalDate(xValue.getKey()).equals(getLocalDate(yValue.getKey()))) {
+		    		
+		    		System.out.println(getLocalDate(xValue.getKey()));
+		    		
 		    		if (resultData.get(getLocalDate(xValue.getKey())) != null) {
+		    			//System.out.println("if");
 		    			List<MatchedDataPair> matchedPair = resultData.get(getLocalDate(xValue.getKey()));
 		    			matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
 		    		} else {
+		    			//System.out.println("else");
 		    			List<MatchedDataPair> matchedPair = new ArrayList<MatchedDataPair>();
 		    			matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
 		    			resultData.put(getLocalDate(xValue.getKey()), matchedPair);
@@ -83,11 +99,11 @@ public class DataCollectionBuilder {
 				break;
 			case WEEK:
 				date = localdate.getYear() + "-" + ((localdate.getMonthValue() / 3) + 1) + "-" + localdate.getMonthValue()
-				+ "-" + localdate.getDayOfWeek();
+				+ "-";
 				break;
 			case DAY:
 				date = localdate.getYear() + "-" + ((localdate.getMonthValue() / 3) + 1) + "-" + localdate.getMonthValue()
-				+ "-" + localdate.getDayOfWeek() + "-" + localdate.getDayOfYear();
+				+ "-" + localdate.getDayOfYear();
 				break;
 			default:
 				date = localdate.getYear() + "";

@@ -5,9 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import hig.jonasoster.inl1.DataCollection;
-import hig.jonasoster.inl1.DataCollectionBuilder;
-
 public class DataCollectionTest {
 
 	@Before

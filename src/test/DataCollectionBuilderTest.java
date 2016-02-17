@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.time.LocalDate;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +18,8 @@ public class DataCollectionBuilderTest {
 	private DataSourceImp dsX;
 	private DataSourceImp dsY;
 	private DataCollectionBuilder dcb;
+	private DataCollection dc;
+	private Map<String, MatchedDataPair> map;
 
 	@Before
 	public void setUp() throws Exception {
@@ -29,33 +30,43 @@ public class DataCollectionBuilderTest {
 	}
 	
 	private void setUpData() {
-		//dsX.addData(LocalDate.of(0000, 01, 01), 0.0);
-		dsX.addData(LocalDate.of(1999, 12, 31), -3.5);
-		dsX.addData(LocalDate.of(2000, 01, 01), 30d);
-		dsX.addData(LocalDate.of(2000, 01, 01), 20d);
+		dsX.addData(LocalDate.of(2000, 12, 31), 5d);
+		dsX.addData(LocalDate.of(2000, 01, 01), 10d);
+		dsX.addData(LocalDate.of(2000, 01, 03), 5d);
+		dsX.addData(LocalDate.of(2000, 01, 20), 15d);
+		dsX.addData(LocalDate.of(2000, 04, 20), 3d);
 		
-		//dsY.addData(LocalDate.of(0000, 01, 01), 0d);
 		dsY.addData(LocalDate.of(2000, 12, 31), 2d);
-		dsY.addData(LocalDate.of(2000, 01, 01), 7d);
 		dsY.addData(LocalDate.of(2000, 01, 01), 3d);
+		dsY.addData(LocalDate.of(2000, 01, 03), 4d);
+		dsY.addData(LocalDate.of(2000, 01, 20), 5d);
+		dsY.addData(LocalDate.of(2000, 04, 20), 3d);
 	}
 
-	@After
+	/*@After
 	public void tearDown() throws Exception {
 		dcb = null;
 		dsX = null;
 		dsY = null;
-	}
+	}*/
 
 	@Test
 	public void testGetResult() {
-		DataCollection dc = dcb.getResult();
-		Map<String, MatchedDataPair> map = dc.getData();
-		MatchedDataPair pair = map.get("2000-1-1-SATURDAY-1");
-		System.out.println(pair);
-		System.out.println(dc.getData());
-		//assertEquals(25.0, pair.getxValue(), 0.001);
-		assertEquals(4.0, pair.getyValue(), 0.001);
+		// Days
+		/*dc = dcb.getResult();
+		map = dc.getData();
+		MatchedDataPair pair1 = map.get("2000-1-1-1");
+		assertEquals(10d, pair1.getxValue(), 0.001);
+		assertEquals(3d, pair1.getyValue(), 0.001);*/
+		// Months
+		dcb.setResolution(Resolution.MONTH);
+		dc = dcb.getResult();
+		map = dc.getData();
+		MatchedDataPair pair2 = map.get("2000-01");
+		//System.out.println(pair2);
+		//System.out.println(pair2);
+		assertEquals(10d, pair2.getxValue(), 0.001);
+		assertEquals(4d, pair2.getyValue(), 0.001);
 	}
 
 }
