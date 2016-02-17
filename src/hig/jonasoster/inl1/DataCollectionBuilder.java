@@ -1,8 +1,10 @@
 package hig.jonasoster.inl1;
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -44,11 +46,8 @@ public class DataCollectionBuilder {
 				sumX = sumX + pair.getxValue();
 				sumY = sumY + pair.getyValue();
 				counter++;
+				System.out.println(pair);
 			}
-			
-			/*System.out.println(sumY);
-			System.out.println(sumX);
-			System.out.println(counter);*/
 			
 			finalResult.put(values.getKey(), new MatchedDataPair((sumX / counter), (sumY / counter)));
 	    }
@@ -65,15 +64,10 @@ public class DataCollectionBuilder {
 		    for (Entry<LocalDate, Double> yValue : yData.getData().entrySet()) {	
 		    	// Check if match
 		    	if (getLocalDate(xValue.getKey()).equals(getLocalDate(yValue.getKey()))) {
-		    		
-		    		System.out.println(getLocalDate(xValue.getKey()));
-		    		
 		    		if (resultData.get(getLocalDate(xValue.getKey())) != null) {
-		    			//System.out.println("if");
 		    			List<MatchedDataPair> matchedPair = resultData.get(getLocalDate(xValue.getKey()));
 		    			matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
 		    		} else {
-		    			//System.out.println("else");
 		    			List<MatchedDataPair> matchedPair = new ArrayList<MatchedDataPair>();
 		    			matchedPair.add(new MatchedDataPair(xValue.getValue(), yValue.getValue()));
 		    			resultData.put(getLocalDate(xValue.getKey()), matchedPair);
@@ -86,24 +80,24 @@ public class DataCollectionBuilder {
 	
 	private String getLocalDate(LocalDate localdate) {
 		String date;
+		Locale locale = new Locale("sv", "SE");
+		int weekOfYear = localdate.get(WeekFields.of(locale).weekOfWeekBasedYear());
 		
 		switch (resolution) {
 			case YEAR:
-				date = localdate.getYear() + "-";
+				date = localdate.getYear() + "";
 				break;
 			case QUARTER:
 				date = localdate.getYear() + "-" + ((localdate.getMonthValue() / 3) + 1);
 				break;
 			case MONTH:
-				date = localdate.getYear() + "-" + ((localdate.getMonthValue() / 3) + 1) + "-" + localdate.getMonthValue();
+				date = localdate.getYear() + "-" + localdate.getMonthValue();
 				break;
 			case WEEK:
-				date = localdate.getYear() + "-" + ((localdate.getMonthValue() / 3) + 1) + "-" + localdate.getMonthValue()
-				+ "-";
+				date = localdate.getYear() + "-" +  weekOfYear;
 				break;
 			case DAY:
-				date = localdate.getYear() + "-" + ((localdate.getMonthValue() / 3) + 1) + "-" + localdate.getMonthValue()
-				+ "-" + localdate.getDayOfYear();
+				date = localdate.getYear() +  "-" + localdate.getMonthValue() + "-" + localdate.getDayOfMonth();
 				break;
 			default:
 				date = localdate.getYear() + "";
